@@ -1,0 +1,16 @@
+FROM eclipse-temurin:17
+
+WORKDIR /app
+
+# Copia os arquivos da raiz atual para o container
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+COPY src src
+
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
+
+EXPOSE 8080
+
+CMD ["java", "-Dquarkus.http.port=8080", "-Dquarkus.http.host=0.0.0.0", "-jar", "target/quarkus-app/quarkus-run.jar"]
